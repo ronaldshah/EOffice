@@ -1,0 +1,84 @@
+﻿@model DataModel.DMNewWorkingHour
+@using (Ajax.BeginForm("SaveNewWorkingHour", "HR", "", new AjaxOptions { HttpMethod = "Post", OnBegin = "StartProcess", OnSuccess = "onSuccess", OnFailure = "OnFail" }, new { id = "InvoiceSearch" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="col-lg-12">
+        <div class="form-horizontal">
+            <br />
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="email" style="text-align:left">Time For Branch </label>
+                <div class="col-sm-3">
+                    @Html.HiddenFor(x => Model.Branch, new { @Value = ViewBag.BranchID })
+                    @Html.TextBoxFor(x => Model.BranchName, new { @class = "form-control", @Value = ViewBag.BranchName, @disabled = "disabled" })
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="email" style="text-align:left">Time Group Name </label>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(x => Model.TimeGroupName, new { @class = "form-control", @placeholder = "Time Group Name", @required = "required" })
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="blanks" style="text-align:center"></label>
+                <div class="col-sm-2">
+                    <label class="control-label col-sm-2" for="Current" style="text-align:center">Current</label>
+                </div>
+                <div class="col-sm-2">
+                    <label class="control-label col-sm-2" for="Maxium" style="text-align:center">Maxium</label>
+                </div>
+                <div class="col-sm-2">
+                    <label class="control-label col-sm-2" for="Minimun" style="text-align:center">Minimun</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="email" style="text-align:left">Time In (HH:MM)</label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(x => Model.CurrentIn, new { @class = "form-control", @placeholder = "Time In", @type = "time", @required = "required" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(x => Model.MinIn, new { @class = "form-control", @placeholder = "Minimun Time In", @type = "time", @required = "required" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(x => Model.MaxIn, new { @class = "form-control", @placeholder = "Maximum Time In", @type = "time", @required = "required" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="email" style="text-align:left">Time Out (HH:MM)</label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(x => Model.CurrentOut, new { @class = "form-control", @placeholder = "Time Out", @type = "time", @required = "required" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(x => Model.MinOut, new { @class = "form-control", @placeholder = "Minimun Time Out", @type = "time", @required = "required" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(x => Model.MaxOut, new { @class = "form-control", @placeholder = "Maximum Time Out", @type = "time", @required = "required" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="email" style="text-align:left"></label>
+                <div class="col-sm-3">
+                    <button id="singlebutton" name="singlebutton" class="btn btn-primary btn-lg">Save</button>
+                    <button class="btn btn-danger btn-lg" type="button" onclick="CancelNewWorkingHour()" style="width:100px">Cancel</button>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+}
+<script type="text/javascript">
+    function CancelNewWorkingHour() {
+        $("#dvLoader").show();
+        $("#MasterTbl").empty();
+        $("#dvLoader").hide();
+
+    }
+   
+</script>
+ 
+
+
+

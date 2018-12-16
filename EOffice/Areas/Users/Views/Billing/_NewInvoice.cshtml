@@ -1,0 +1,149 @@
+﻿@model DataModel.DMCreateNewInvoice
+<div class="row clearfix">
+    <div class="col-md-12 table-responsive">
+        <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width:50px">
+                        #
+                    </th>
+                    <th class="text-center">
+                        ITEM NAME - DESCRIPTION
+                    </th>
+                    <th class="text-center" style="width:50px">
+                        QTY
+                    </th>
+                    <th class="text-center" style="width:100px">
+                        UOM
+                    </th>
+                    <th class="text-center" style="width:150px">
+                        PRICE
+                    </th>
+                    <th class="text-center" style="width:150px">
+                        TOTAL
+                    </th>
+
+                    <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            
+            <tfoot>
+                @for (var i = 0; i <= Model.ListDI.Count() - 1; i++)
+                {
+                    if ((Model.ListDI[i].ItemName != "") && (Model.ListDI[i].ItemName != null))
+                    {
+
+                <tr>
+                    <td>
+                        @Model.ListDI[i].NoID
+                        @Html.HiddenFor(x => Model.Di[i].NoID, new { @Value = Model.ListDI[i].NoID })<br/>
+                        @Html.Image("/Assets/Images/file-edit-png.png", "alt", "30px", "30px", "EditMode"+Model.ListDI[i].NoID, "enableToEdit(" + Model.ListDI[i].NoID + ")")
+                        @Html.Image("/Assets/Images/approved.png", "alt", "30px", "30px", "SaveEditing" + Model.ListDI[i].NoID, "SaveEdit(" + Model.ListDI[i].NoID + ")", "none") <br/>
+                        @Html.Image("/Assets/Images/deletes.png", "alt", "30px", "30px", "DeleteIT" + Model.ListDI[i].NoID, "Delete(" + Model.ListDI[i].NoID + ")", "none")
+
+
+
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => Model.Di[i].ItemName, new { @style = "width:100%", @placeholder = "Item Name", @class = "form-control", @disabled = "disabled", @Value = Model.ListDI[i].ItemName, @id = "ItemName" + Model.ListDI[i].NoID })<br />
+                        @Html.TextBoxFor(x => Model.Di[i].Descriptions, new { @style = "width:100%", @placeholder = "Item Description", @class = "form-control", @disabled = "disabled" , @Value = Model.ListDI[i].Descriptions, @id = "Descriptions" + Model.ListDI[i].NoID })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => Model.Di[i].Qty, new { @style = "width:50px", @class = "form-control", @disabled = "disabled", @Value = Model.ListDI[i].Qty, @id = "Qty" + Model.ListDI[i].NoID, @onkeypress = "return isNumberKey(event);" })
+
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x => Model.Di[i].UOM, new { @style = "width:100%", @class = "form-control", @disabled = "disabled", @Value = Model.ListDI[i].UOM, @id = "UOM" + Model.ListDI[i].NoID })
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(x => Model.Di[i].Price, new {  @style = "width:150px", @placeholder = "Price", @class = "form-control", @disabled = "disabled", @Value = string.Format("{0:n0}", Model.ListDI[i].Price), @id = "Price" + Model.ListDI[i].NoID, @onkeypress = "return isNumberKey(event);" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(x =>x.Di[i].Total,  new { @style = "width:150px", @placeholder = "Price", @class = "form-control", @disabled = "disabled", @Value = string.Format("{0:n0}", Model.ListDI[i].Total), @id = "Total" + Model.ListDI[i].NoID })
+                    </td>
+                </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                            
+                                @Model.ListDI[i].NoID
+                                @Html.HiddenFor(x => Model.Di[i].NoID, new { @Value = Model.ListDI[i].NoID })<br/>
+                                <button class="btn btn-default pull-right" id="AddRowButton" name="submitButton" type="submit" value="AddRow">Add Row</button>
+                            
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => Model.Di[i].ItemName, new { @style = "width:100%", @placeholder = "Item Name", @class = "form-control", @required = "required",@id="ItemName"+i })<br />
+                                @Html.TextBoxFor(x => Model.Di[i].Descriptions, new { @style = "width:100%", @placeholder = "Item Description", @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => Model.Di[i].Qty, new { @style = "width:50px", @class = "form-control", @Value = Model.ListDI[i].Qty, @required = "required", @onkeypress = "return isNumberKey(event);" })
+
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(x => Model.Di[i].UOM, new { @style = "width:100%", @class = "form-control", @required = "required" })
+                            </td>
+
+                            <td>
+                                @Html.TextBoxFor(x => Model.Di[i].Price, new { @style = "width:150px", @placeholder = "Price", @class = "form-control", @onkeypress = "return isNumberKey(event);" })
+                            </td>
+                            
+                            <td>
+                                @Model.ListDI[i].Total
+                            </td>
+                        </tr>
+                    }
+                }
+                <tr>
+                    <td rowspan="5" colspan="4">
+                        @Html.TextAreaFor(x => Model.DCD.Notes,new {@class="form-control",@rows="9" })
+                        
+                            
+                    </td>
+                    
+                </tr>
+                    <tr>
+                        <td >Sub Total</td>
+                        <td>@Html.TextBoxFor(x=>  Model.DCB.SubTotal,new {@disabled="disabled", @style = "width:150px", @placeholder = "Sub Total", @class = "form-control", @Value = string.Format("{0:n0}", ViewBag.Total) })</td>
+                    </tr>
+                    <tr>
+                        <td >Discount</td>
+                        <td>
+                            @Html.TextBoxFor(x => Model.DCB.Discount, new { @style = "width:100%", @class = "form-control",@placeholder = "Discount" })
+                        </td>
+                    </tr>
+                <tr>
+                    <td >TAX</td>
+                    <td>
+                        @Html.TextBoxFor(x => Model.DCB.TAX, new { @style = "width:100%", @class = "form-control", @placeholder = "TAX" })
+                    </td>
+                </tr>
+                <tr>
+                    <td >Grand Total</td>
+                    <td>
+                        @Html.TextBoxFor(x => Model.DCB.Total, new { @style = "width:100%", @class = "form-control", @placeholder = "Grand Total" })
+                    </td>
+                </tr>
+                
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function enableToEdit(x) {
+        $("#ItemName" + x).removeAttr("disabled", "disabled");
+        $("#Descriptions" + x).removeAttr("disabled", "disabled");
+        $("#Qty" + x).removeAttr("disabled", "disabled");
+        $("#UOM" + x).removeAttr("disabled", "disabled");
+        $("#Price" + x).removeAttr("disabled", "disabled");
+        $("#SaveEditing" + x).removeClass("display-none");
+        $("#DeleteIT" + x).removeClass("display-none");
+        $("#EditMode" + x).addClass("display-none");       
+    }
+    
+</script>

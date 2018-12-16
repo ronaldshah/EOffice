@@ -1,0 +1,55 @@
+﻿@media print
+         {   
+            body {-webkit-print-color-adjust: exact;}
+            
+            .no-print, .no-print *
+            {
+               display: none !important;
+            }
+            .no-print-required, .no-print-required *
+            {
+               display: none !important;
+            }
+         }
+
+
+         
+
+         table td {max-height: 15px;}
+
+         select, input {background-color:#D6E6F4;border:0;}
+         .element-white {background-color:#fff;border:0;}
+         #foto {cursor: pointer;}
+
+         .titulo {background-color:cornflowerblue;font-family:'Open Sans Condensed';font-weight:700;}
+         textarea
+         {
+             border: 1px solid #c3c3c3;             
+             resize: none;             
+             overflow-x: hidden;
+             height: 25px;
+         }
+         
+         
+         select{
+              border: 0 !important;  /*Removes border*/
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              appearance: none;
+              text-overflow:'';
+              text-indent: 0.01px; /* Removes default arrow from firefox*/
+              font-style: italic;
+          }
+          select::-ms-expand {
+              display: none;
+          }
+          .select-wrapper
+          {
+              padding-left:0px;
+              overflow:hidden;              
+          }
+          
+          h6::first-letter {margin-top: 0; }
+          h4::first-letter {margin-top: 0; }
+
+          h6{ font-size: 14px; }

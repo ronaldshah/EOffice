@@ -1,0 +1,138 @@
+﻿@model DataModel.DMSearchField
+
+@{
+    ViewBag.Title = "index";
+    Layout = "~/Views/Shared/_dashboard.cshtml";
+}
+
+<div class="TitelBOX">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-horizontal">
+                <table class="table">
+                    <tr>
+                        <td width="100px"><img src="~/Assets/Images/customers-icon.png" width="100px" height="120px" /></td>
+                        <td><div class="TitlePage">MASTER CUSTOMER</div></td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvLoader" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;display:none;">
+    <p style="position: absolute; color: White; top: 45%; left: 45%;">
+        <img src="~/Assets/Images/loading_gear.gif" width="100px" height="100px" /><br />
+        <span class="center-block" style="background-color:black">Please Wait...</span>
+
+    </p>
+</div>
+
+
+<div class="row col-md-12">
+    <div class="col-md-12 form-horizontal">
+        <br />
+
+        <div class="form-group">
+            @using (Ajax.BeginForm("CustomerSearch", "Customer", "", new AjaxOptions { OnBegin = "StartProcess", OnSuccess = "onSuccess", OnFailure = "OnFail",UpdateTargetId= "ShowTable" }, new { id = "InvoiceSearch" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <label class="control-label col-sm-2" for="email" style="text-align:left">Search</label>
+                
+                <div class="col-sm-5">
+                    @Html.TextBoxFor(x => Model.Searching.Key, new { @class = "form-control", @placeholder = "Search for..." })
+
+
+                </div>
+                <div class="col-sm-1">
+                    <button id="singlebutton" name="singlebutton" class="btn btn-info btn-lg" type="submit">Find</button>
+                </div>
+            }
+            <div class="col-sm-1">
+                <a href="@Url.Action("NewCustomer","Customer")" class="btn btn-primary">New Invoice</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<br />
+
+
+<div id="ShowTable">
+
+</div>
+
+<script src="~/Assets/JQuery/jquery-1.9.1.js"></script>
+<script src="~/Assets/bootstrap/js/bootstrap.js"></script>
+<script src="~/Assets/bootstrap-notify-master/bootstrap-notify.js"></script>
+<script type="text/javascript">
+
+    function StartProcess(data) {
+
+        ShowLoader();
+    }
+    function onSuccess(data) {
+        HideLoader();
+        if (data != null && data != '' && data.isSuccess.toString() == 'false' && data.msg.toString() != '') {
+            $.notify({
+                title: '<strong>ERROR!</strong><br/><br/>',
+                message: data.msg,
+                placement: 'TOP'
+            }, {
+                type: 'danger'
+            });
+
+        }
+        $('#InvoiceSearch input[type=submit]').removeAttr('disabled');
+    }
+    function OnFail(data) {
+        HideLoader();
+
+        ShowError((data != null && data != '' && data.status == 500) ? data.statusText : 'General system error. Please try again');
+
+        $('#InvoiceSearch input[type=submit]').removeAttr('disabled');
+    }
+
+    function ShowLoader() {
+
+        $("#dvLoader").addClass('loader');
+        $("#dvLoader").show();
+    }
+    function HideLoader() {
+        $("#dvLoader").removeClass('loader');
+        $("#dvLoader").hide();
+    }
+
+
+    $(document).ready(function () {
+        $("#dvLoader").hide();
+    });
+
+    function Search() {
+        var od = document.getElementById("Searching_Month");
+        var odd = document.getElementById("Searching_Year");
+        var mnth = od.options[od.selectedIndex].value;
+        var yrs = odd.options[odd.selectedIndex].value;
+        var vals = document.getElementById("Searching_Key").value;
+        $("#dvLoader").show();
+        $.ajax({
+            url: "/Users/Billing/InvoiceSearch",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify({ Keys: vals}),
+            cache: false
+        }).success(function (data) {
+            $("#ShowTable").empty();
+            $("#ShowTable").html(data);
+            $("#dvLoader").hide();
+
+        });
+    }
+
+
+</script>
+
+
+
+

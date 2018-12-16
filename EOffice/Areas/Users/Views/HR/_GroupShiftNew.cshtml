@@ -1,0 +1,140 @@
+﻿@model DataModel.DMGroupShiftInsert
+@using (Ajax.BeginForm("AddGroupShiftRow", "HR", "", new AjaxOptions { HttpMethod = "Post", OnBegin = "StartProcess", OnSuccess = "onSuccess", OnFailure = "OnFail" }, new { id = "InvoiceSearch" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="col-lg-12">
+        <div class="form-horizontal">
+            <br />
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="email" style="text-align:left">Shift Group For Branch </label>
+                <div class="col-sm-3">
+                    
+                    @Html.HiddenFor(x => Model.GroupShiftHeader.BranchID)
+                    @Html.TextBoxFor(x => Model.GroupShiftHeader.BranchName, new { @class = "form-control" , @readonly = true  })
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="email" style="text-align:left">Shift Group Name </label>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(x => Model.GroupShiftHeader.ShiftName, new { @class = "form-control", @placeholder = "Group Shift Name", @required = "required" })
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="email" style="text-align:left">Efective Date </label>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(x => Model.GroupShiftHeader.EffectiveDate, new { @class = "form-control", @type = "Date", @placeholder = "Efective Date", @required = "required" })
+                </div>
+
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="panel panel-primary">
+                        <div class="col-sm-12" style="margin-top:10px;text-align:right;">
+                            @if (ViewBag.Edit == 0)
+                {
+                                <button class="btn btn-info pull-right" id="SaveButton" name="submitButton" type="submit" value="Save">Save</button>
+                            }
+
+
+                        </div>
+
+                        <div class="form-horizontal" style="margin-top:10px">
+
+
+                            
+
+
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="spaces"></label>
+                                <div class="col-sm-10">
+                                    <div class="row clearfix">
+                                        <div class="col-md-12 table-responsive">
+                                            <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">
+                                                            
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Time Group
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Working Day(s)
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Off Day(s)
+                                                        </th>
+
+                                                        <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+
+                                                <tfoot>
+                                                    @for (var i = 0; i <= Model.GroupShiftDetails.Count - 1; i++)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <button class="btn btn-info pull-right" id="AddRowButton" name="submitButton" type="submit" value="AddRow">Add Row</button>
+                                                            </td>
+                                                            <td>
+                                                                @Html.HiddenFor(x => Model.GroupShiftDetails[i].ID, new { @value = Model.GroupShiftDetails[i].ID })
+                                                                @Html.DropDownListFor(x => Model.GroupShiftDetails[i].WorkingHourID, new SelectList(Model.TimeGroup, "ID", "TimeGroupName"), "Select Time Group", new { @class = "form-control input-md", @id = "TimeID" })
+                                                            </td>
+                                                            <td>
+                                                                @Html.TextBoxFor(x => Model.GroupShiftDetails[i].WorkingDay, new { @type = "number", @value = Model.GroupShiftDetails[i].WorkingDay })
+
+                                                            </td>
+                                                            <td>
+                                                                @Html.TextBoxFor(x => Model.GroupShiftDetails[i].OffDay, new { @type = "number", @value = Model.GroupShiftDetails[i].OffDay })
+                                                            </td>
+
+                                                            <td></td>
+                                                        </tr>
+                                                    }
+
+                                                </tfoot>
+                                                
+                                            </table>
+                                            <button class="btn btn-info pull-right" id="SaveButton" name="submitButton" type="submit" value="Save">Save</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+}
+<script type="text/javascript">
+    function CancelNewWorkingHour() {
+        $("#dvLoader").show();
+        $("#MasterTbl").empty();
+        $("#dvLoader").hide();
+
+    }
+
+</script>
+
+
+
+
+

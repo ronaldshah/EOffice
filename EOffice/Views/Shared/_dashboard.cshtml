@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/Assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/Assets/css/dashboard.css" rel="stylesheet" />
+
+    @*<link href="~/Content/morris.css" rel="stylesheet" />*@
+    <link href="~/Assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet" type="text/css">
+    <link href="~/Assets/Animate/Animate.css" rel="stylesheet" />
+    <link href="~/Assets/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="~/Assets/JQuery/jquery-1.9.1.js"></script>
+    
+
+</head>
+<body style="overflow: auto;">
+    <div id="loading" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;">
+        <p style="position: absolute; color: White; top: 45%; left: 45%;">
+            <img src="~/Assets/Images/loading.gif" width="100px" height="100px" />
+        </p>
+    </div>
+
+    <div class="page-wrapper chiller-theme toggled">
+        <nav id="sidebar" class="sidebar-wrapper">
+            <div class="sidebar-content">
+                <div id="toggle-sidebar">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="sidebar-brand">
+                    <a href="#">Office Cloud</a>
+                </div>
+                <div class="sidebar-header">
+                    <div class="user-pic">
+                        <img class="img-responsive img-rounded" src='@Url.Content("/document/Employee/foto/"+ ViewBag.Foto)' alt="User picture">
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">
+                            <strong>@ViewBag.UserName</strong>
+                        </span>
+                        <span class="user-role">@ViewBag.Department</span>
+                        <span class="user-role">@ViewBag.RolesName</span>
+                        <span class="user-status">
+                            <i class="fa fa-circle"></i>
+                            @ViewBag.LastLogin
+                        </span>
+                    </div>
+                </div>
+                <!-- sidebar-search  -->
+            
+                <div class="sidebar-menu" id="menu-content" >
+                    <ul>
+                       @Html.Raw(ViewBag.TxtMenu)
+                    </ul>
+                   
+                </div>
+                <!-- sidebar-menu  -->
+            </div>
+            <!-- sidebar-content  -->
+            <div class="sidebar-footer">
+                <a href="#">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge badge-pill badge-warning notification">3</span>
+                </a>
+                <a href="#">
+                    <i class="fa fa-envelope"></i>
+                    <span class="badge badge-pill badge-success notification">7</span>
+                </a>
+                <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <span class="badge-sonar"></span>
+                </a>
+                <a href="/">
+                    <i class="fa fa-power-off"></i>
+                </a>
+            </div>
+        </nav>
+        <!-- sidebar-wrapper  -->
+        <main class="page-content">
+            <div class="container-fluid">
+                @RenderBody()
+
+            </div>
+        </main>
+        <!-- page-content" -->
+    </div>
+    <script src="~/Assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Assets/JS/dashboard.js"></script>
+    @*<script src="~/Assets/JS/RequiredIf.js"></script>*@
+    <script src="~/Assets/JQuery/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Assets/JS/ie10-viewport-bug-workaround.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#loading").hide();
+            //$("#dvLoader").show();
+        });
+
+        
+    </script>
+</body>
+</html>

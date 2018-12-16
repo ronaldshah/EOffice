@@ -1,0 +1,259 @@
+﻿@model DataModel.DMCreateNewInvoice
+@{
+    ViewBag.Title = "NewInvoice";
+    Layout = "~/Views/Shared/_dashboard.cshtml";
+}
+<script src="~/Assets/bootstrap-notify-master/bootstrap-notify.min.js"></script>
+<div id="dvLoader" style="margin: 0px; padding: 0px; position: fixed; right: 0px; top: 0px; width: 100%; height: 100%; background-color: rgb(102, 102, 102); z-index: 30001; opacity: 0.8;display:none;">
+    <p style="position: absolute; color: White; top: 45%; left: 45%;">
+        <img src="~/Assets/Images/loading_gear.gif" width="100px" height="100px" /><br />
+        <span class="center-block" style="background-color:black">Please Wait...</span>
+
+    </p>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            @using (Ajax.BeginForm("AddItem", "Billing",
+                                                                  new AjaxOptions
+                                                                  {
+                                                                      HttpMethod = "Post",
+                                                                      UpdateTargetId = "dvNewInvoice",
+                                                                      OnSuccess = "onSuccess",
+                                                                      OnBegin = "onBegin"
+                                                                  }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+            <div class="form-horizontal" style="margin-top:10px">
+
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Bill To:</label>
+                    <div class="col-sm-4">
+                        @Html.HiddenFor(x => Model.DCD.CustomerID, new { @style = "width:100%", @class = "form-control", @id = "CustID",@value=Model.NC.ClientID })
+                        @Html.TextBoxFor(x => Model.DCD.CustomerName, new { @style = "width:100%", @class = "form-control", @id = "CustName", @placeholder = "Contact Person",@Value=Model.NC.ContactPerson })
+                        
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.ActionLink("Find", "FindCustomer", "Billing", null, new { @class = "btn btn-info", @id = "findCustomer" })
+                        @Html.ActionLink("Add New", "NewCustomer", "Customer",null, new { @class = "btn btn-info", @id = "findCustomer" })
+                        
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Address: </label>
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(x => Model.DCD.Address1, new { @style = "width:100%", @class = "form-control", @id = "Address1", @placeholder = "Address", @required = "required" })
+                    </div>
+                    <div class="col-sm-5">
+                        <label class="control-label col-sm-4" for="email">Created Date:</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => Model.DCD.CreatedDate, new { @type = "date", @style = "width:100%", @class = "form-control", @id = "CreatedDate" })
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email"></label>
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(x => Model.DCD.Address2, new { @style = "width:100%", @class = "form-control", @id = "Address2", @placeholder = "Address (optional)" })
+                    </div>
+                    <div class="col-sm-5">
+                        <label class="control-label col-sm-4" for="email">Due Date:</label>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(x => Model.DCD.CreatedDate, "{0:dd MMM yyyy}", new { @type = "date", @style = "width:100%", @class = "form-control", @id = "DueDate" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email"></label>
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(x => Model.DCD.Address3, new { @style = "width:100%", @class = "form-control", @id = "Address3", @placeholder = "Address (optional)" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email"></label>
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(x => Model.DCD.City, new { @style = "width:100%", @class = "form-control", @id = "City", @placeholder = "City", @required = "required" })
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(x => Model.DCD.StateProvince, new { @style = "width:100%", @class = "form-control", @id = "StateProvince", @placeholder = "State/Province", @required = "required" })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.TextBoxFor(x => Model.DCD.Zip, new { @style = "width:100%", @class = "form-control", @id = "Zip", @placeholder = "ZIP", @required = "required" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email"></label>
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(x => Model.DCD.Country, new { @style = "width:100%", @class = "form-control", @id = "Country", @placeholder = "Country", @required = "required" })
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(x => Model.DCD.Phone, new { @style = "width:100%", @class = "form-control", @id = "Phone", @placeholder = "Phone", @required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">E-Mail:</label>
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(x => Model.DCD.Email, new { @style = "width:100%", @class = "form-control", @id = "Email", @placeholder = "Email", @required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="email"></label>
+                    <div class="col-sm-10">
+
+
+                        <div id="dvNewInvoice">
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+            
+            <button class="btn btn-default pull-right" id="saveButton" name="submitButton" type="submit" value="Save">Save</button>
+            }
+
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $("#loading").hide();
+        $.ajax({
+            url: "/Users/Billing/FirstRow",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify({ submitButton: "AddRow"}),
+            cache: false,
+            success: function (data) {
+                
+                $("#dvNewInvoice").empty();
+                $("#dvNewInvoice").html(data);
+                $("#dvLoader").hide();
+
+            },
+            error: function () {
+                $.notify({
+                    title: '<strong>ERROR!</strong><br/><br/>',
+                    message: 'Error while loading Invoice Form',
+                    placement: 'TOP'
+                }, {
+                    type: 'danger'
+                });
+                $("#dvLoader").hide();
+            }
+        });
+    });
+    function onSuccess(data) {
+        
+        $("#dvLoader").removeClass('loader');
+        $("#dvLoader").hide();
+        
+    }
+    function onBegin() {
+        $("#dvLoader").addClass('loader');
+        $("#dvLoader").show();
+    }
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+    function SaveEdit(x) {
+        $("#ItemName" + x).attr("disabled", "disabled");
+        $("#Descriptions" + x).attr("disabled", "disabled");
+        $("#Qty" + x).attr("disabled", "disabled");
+        $("#UOM" + x).attr("disabled", "disabled");
+        $("#Price" + x).attr("disabled", "disabled");
+        $("#SaveEditing" + x).addClass("display-none");
+        $("#EditMode" + x).removeClass("display-none");
+        var ItemName = document.getElementById("ItemName" + x).value;
+        var Descriptions = document.getElementById("Descriptions" + x).value;
+        var Qty = document.getElementById("Qty" + x).value;
+        var UOM = document.getElementById("UOM" + x).value;
+        var Price = document.getElementById("Price" + x).value;
+        document.getElementById("Total" + x).value = Qty * Price;
+
+        $("#dvLoader").show();
+        $.ajax({
+            url: "/Users/Billing/UpdateInvoiceItem",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify({ ID: x, ItemName: ItemName, Descriptions: Descriptions, Qty: Qty, UOM: UOM, Price: Price }),
+            cache: false,
+            success: function () {
+                $.notify({
+                    title: '<strong>Success!</strong><br/><br/>',
+                    message: 'Updated',
+                    placement: 'TOP'
+                }, {
+                    type: 'success'
+                });
+                $("#dvLoader").hide();
+
+            },
+            error: function () {
+                $.notify({
+                    title: '<strong>ERROR!</strong><br/><br/>',
+                    message: data.msg,
+                    placement: 'TOP'
+                }, {
+                    type: 'danger'
+                });
+                $("#dvLoader").hide();
+            }
+        });
+
+    }
+
+    function Delete(x) {
+       
+        $("#dvLoader").show();
+        $.ajax({
+            url: "/Users/Billing/DeleteInvoiceItem",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify({ ID: x }),
+            cache: false,
+            success: function (data) {
+                $.notify({
+                    title: '<strong>Success!</strong><br/><br/>',
+                    message: 'Updated',
+                    placement: 'TOP'
+                }, {
+                    type: 'success'
+                });
+                $("#dvNewInvoice").empty();
+                $("#dvNewInvoice").html(data);
+                $("#dvLoader").hide();
+                
+
+            },
+            error: function () {
+                $.notify({
+                    title: '<strong>ERROR!</strong><br/><br/>',
+                    message: data.msg,
+                    placement: 'TOP'
+                }, {
+                    type: 'danger'
+                });
+                $("#dvLoader").hide();
+            }
+        });
+
+    }
+</script>

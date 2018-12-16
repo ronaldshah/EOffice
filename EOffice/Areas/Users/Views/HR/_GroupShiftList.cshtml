@@ -1,0 +1,82 @@
+﻿@model  DataModel.DMGroupShiftList
+
+
+@for (var i = 0; i <= Model.GroupShiftHeader.Count - 1; i++)
+{
+
+
+
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <br />
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Branch" style="text-align:left;margin-left:10px">Branch </label>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(x => Model.GroupShiftHeader[i].BranchName, new { @class = "form-control", @value = Model.GroupShiftHeader[i].BranchName, @required = "required", @disabled = "disabled" })
+
+                        </div>
+                        <div class="col-sm-6">
+                            @if (Model.GroupShiftHeader[i].FActive == true)
+                            {
+                                <img src="~/Assets/Images/power-on-icon-hi.png" height="40px" width="40px" onclick="EDShiftGroup(@Model.GroupShiftHeader[i].ID)" />
+                            }
+                            else
+                            {
+                                <img src="~/Assets/Images/power-off-icon-hi.png" height="40px" width="40px" onclick="EDShiftGroup(@Model.GroupShiftHeader[i].ID)" />
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="ShiftName" style="text-align:left;margin-left:10px">Shift Name </label>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(x => Model.GroupShiftHeader[i].ShiftName, new { @class = "form-control", @value = Model.GroupShiftHeader[i].ShiftName, @required = "required", @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="ShiftName" style="text-align:left;margin-left:10px">Efective Date </label>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(x => Model.GroupShiftHeader[i].EffectiveDate, new { @type = "Date", @class = "form-control", @Value = Model.GroupShiftHeader[i].EffectiveDate.ToString("yyyy-MM-dd"), @required = "required", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="margin-left:10px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>In</th>
+                                <th>Out</th>
+                                <th>Working Day(s)</th>
+                                <th>Off Day(s)</th>
+                            </tr> 
+                        </thead>
+
+                        <tbody id="tBLItems">
+                            
+                            @for (Int16 y = 0; y <= Model.GroupShiftDetails.Count - 1; y++) {
+                                if (Model.GroupShiftDetails[y].ShiftID == Model.GroupShiftHeader[i].ID)
+                                {
+                            <tr>
+                                
+                                <td>@Model.GroupShiftDetails[y].CurrentIn.ToString("HH:mm")</td>
+                                <td>@Model.GroupShiftDetails[y].CurrentOut.ToString("HH:mm")</td>
+                                <td>@Model.GroupShiftDetails[y].WorkingDay</td>
+                                <td>@Model.GroupShiftDetails[y].OffDay</td>
+                            </tr>
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+                <br />
+            </div>
+        </div>
+
+
+
+}
+
+
